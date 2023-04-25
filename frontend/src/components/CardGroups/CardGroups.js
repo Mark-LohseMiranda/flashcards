@@ -85,7 +85,7 @@ export default function CardGroups({
           >
             <div className="">
               <Tooltip message={"Public/Private"}>
-                {item.private ? (
+                {!item.private ? (
                   <MdPublic size="1.5em" />
                 ) : (
                   <MdPublicOff size="1.5em" />
