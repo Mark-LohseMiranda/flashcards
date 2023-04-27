@@ -26,14 +26,16 @@ const API = {
   },
 
   signup: (data) => {
-    return axios.post(`${URL_PREFIX}/api/users`, data);
+    return axios.post(`${URL_PREFIX}/api/users`, data, {
+      withCredentials: true,
+    });
   },
 
   delete: () => {
     return axios.delete(`${URL_PREFIX}/api/users`, { withCredentials: true });
   },
 
-  // ---------------- Card Routes ---------------- //
+  // ---------------- Card Group Routes ---------------- //
 
   cardGroup: () => {
     return axios.get(`${URL_PREFIX}/api/cardgroup`, {
@@ -57,6 +59,31 @@ const API = {
     return axios.delete(`${URL_PREFIX}/api/cardgroup/${cardGroupId}`, {
       withCredentials: true,
     });
+  },
+
+  // ---------------- Card Routes ---------------- //
+
+  createCard: (data, cardGroupId) => {
+    return axios.post(
+      `${URL_PREFIX}/api/cardgroup/addcard/${cardGroupId}`,
+      data,
+      { withCredentials: true }
+    );
+  },
+
+  updateCard: (data, cardGroupId, cardId) => {
+    return axios.put(
+      `${URL_PREFIX}/api/cardgroup/updatecard/${cardGroupId}/${cardId}`,
+      data,
+      { withCredentials: true }
+    );
+  },
+
+  deleteCard: (cardGroupId, cardId) => {
+    return axios.delete(
+      `${URL_PREFIX}/api/cardgroup/deletecard/${cardGroupId}/${cardId}`,
+      { withCredentials: true }
+    );
   },
 };
 

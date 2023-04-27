@@ -6,12 +6,14 @@ import { BsJournalPlus } from "react-icons/bs";
 import API from "../../API/API";
 import Tooltip from "../Tooltip/Tooltip";
 import UpdateForm from "./UpdateForm";
+import FORMAT from "../../Util/FORMAT";
 
 export default function CardGroups({
   user,
   cardGroups,
   setCardGroups,
   setCards,
+  setCardGroupId,
 }) {
   const [selectedData, setSelectedData] = useState();
   const [formState, setFormState] = useState({
@@ -23,10 +25,11 @@ export default function CardGroups({
 
   const navigate = useNavigate();
 
-  const selectGroup = (cards, target) => {
+  const selectGroup = (cardGroupId, cards, target) => {
     setCards(cards);
+    setCardGroupId(cardGroupId);
     localStorage.setItem("cardsData", JSON.stringify(cards));
-    navigate(`/${target}`);
+    navigate(`/${target}?cgid=${cardGroupId}`);
   };
 
   const saveUpdate = async (cardGroupId) => {
@@ -81,7 +84,6 @@ export default function CardGroups({
           <div
             key={item._id}
             className="relative items-center p-5 space-y-4 transition-all duration-100 ease-out bg-yellow-200 rounded-md shadow-md w-96 dark:bg-slate-400 dark:text-slate-100"
-            // className="block rounded-lg bg-white p-6 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700"
           >
             <div className="">
               <Tooltip message={"Public/Private"}>
@@ -104,8 +106,8 @@ export default function CardGroups({
             <button
               type="button"
               disabled={!item.cards.length}
-              onClick={() => selectGroup(item.cards, "cards")}
-              className="disabled:cursor-not-allowed disabled:bg-gray-500 inline-block rounded enabled:bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+              onClick={() => selectGroup(item._id, item.cards, "cards")}
+              className={FORMAT.button()}
               data-te-ripple-init
               data-te-ripple-color="light"
             >
@@ -124,7 +126,7 @@ export default function CardGroups({
               }}
               data-te-toggle="modal"
               data-te-target="#staticBackdrop"
-              className="disabled:cursor-not-allowed disabled:bg-gray-500 inline-block rounded enabled:bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+              className={FORMAT.button()}
               data-te-ripple-init
               data-te-ripple-color="light"
             >
@@ -132,8 +134,8 @@ export default function CardGroups({
             </button>
             <button
               disabled={user._id !== item.owner}
-              onClick={() => selectGroup(item.cards, "editcards")}
-              className="disabled:cursor-not-allowed disabled:bg-gray-500 inline-block rounded enabled:bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+              onClick={() => selectGroup(item._id, item.cards, "editcards")}
+              className={FORMAT.button()}
               data-te-ripple-init
               data-te-ripple-color="light"
             >
@@ -229,7 +231,7 @@ export default function CardGroups({
               </button>
               <button
                 type="button"
-                className="ml-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+                className={FORMAT.button()}
                 data-te-ripple-init
                 data-te-ripple-color="light"
                 data-te-modal-dismiss
