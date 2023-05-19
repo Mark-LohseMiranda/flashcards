@@ -51,7 +51,7 @@ function App() {
           />
           <Route
             path="/editcards"
-            element={<EditCards cards={cards} setCards={setCards} cardGroupId={cardGroupId}/>}
+            element={<EditCards cards={cards} setCards={setCards} cardGroupId={cardGroupId} setCardGroups={setCardGroups}/>}
           />
           <Route path="/*" element={<Home />} />
         </Routes>

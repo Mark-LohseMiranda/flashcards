@@ -6,7 +6,7 @@ import FORMAT from "../../Util/FORMAT";
 import CardForm from "./CardForm";
 import API from "../../API/API";
 
-export default function EditCards({ cards, setCards, cardGroupId }) {
+export default function EditCards({ cards, setCards, cardGroupId, setCardGroups }) {
   const [formState, setFormState] = useState({
     question: "",
     answer: "",
@@ -55,17 +55,13 @@ export default function EditCards({ cards, setCards, cardGroupId }) {
 
   return (
     <div>
-      <div className="hidden md:block overflow-auto rounded-lg shadow w-5/6 mx-auto mt-4">
-        <table className="">
+      <div className="hidden md:block overflow-auto rounded-lg shadow w-5/6 mx-auto mt-4 max-w-4xl">
+        <table className="min-w-full text-left">
           <thead className="border-b-2 border-gray-200 bg-gray-50">
             <tr>
-              <th className="p-3 text-sm font-semibold tracking-wide text-left">
-                Question
-              </th>
-              <th className="p-3 text-sm font-semibold tracking-wide text-left">
-                Answer
-              </th>
-              <th className="p-3 text-sm font-semibold tracking-wide text-left">
+              <th className="text-sm font-semibold tracking-wide">Question</th>
+              <th className="text-sm font-semibold tracking-wide">Answer</th>
+              <th className="text-sm font-semibold tracking-wide">
                 <p className="invisible">Stuff</p>
               </th>
             </tr>
@@ -109,7 +105,7 @@ export default function EditCards({ cards, setCards, cardGroupId }) {
           data-te-target="#staticBackdrop"
           data-te-ripple-init
           data-te-ripple-color="light"
-          onClick={() => setAdd(true)}
+          // onClick={() => setAdd(true)}
         >
           <BsJournalPlus size="2.5em" />
         </button>
@@ -130,14 +126,13 @@ export default function EditCards({ cards, setCards, cardGroupId }) {
         >
           <div className="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
             <div className="flex flex-shrink-0 items-center justify-end rounded-t-md mt-2 mr-2 dark:border-opacity-50">
-              {/* <!--Close button--> */}
               <button
                 type="button"
                 className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none text-red-500 hover:text-red-950"
                 data-te-modal-dismiss
                 aria-label="Close"
                 onClick={() => {
-                  setFormState({ question: "", answer: "" });
+                  setFormState({ name: "", description: "", private: false });
                   setAdd(false);
                 }}
               >
@@ -157,46 +152,8 @@ export default function EditCards({ cards, setCards, cardGroupId }) {
                 </svg>
               </button>
             </div>
-            {/* <!--Modal body--> */}
             <div data-te-modal-body-ref className="relative p-2">
-              <CardForm
-                handleFormChange={handleFormChange}
-              />
-            </div>
-            {/* <!--Modal footer--> */}
-            <div className="flex flex-shrink-0 flex-wrap items-center justify-between rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
-              <button
-                type="button"
-                disabled={add}
-                onClick={() => {
-                  if (
-                    window.confirm(
-                      "Are you sure you want to delete this Card Group? It cannot be undone."
-                    )
-                  ) {
-                    setFormState({ question: "", answer: "" });
-                    deleteCard(selectedData._id);
-                  }
-                }}
-                className="inline-block rounded bg-danger-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-danger-900 hover:text-white focus:outline-none focus:ring-0 active:bg-primary-accent-200 disabled:bg-gray-500"
-                data-te-modal-dismiss
-                data-te-ripple-init
-                data-te-ripple-color="light"
-              >
-                Delete
-              </button>
-              <button
-                type="button"
-                className={FORMAT.button()}
-                data-te-ripple-init
-                data-te-ripple-color="light"
-                data-te-modal-dismiss
-                onClick={() => {
-                  saveUpdate(selectedData?._id);
-                }}
-              >
-                Save
-              </button>
+              <CardForm setCardGroups={setCardGroups} />
             </div>
           </div>
         </div>

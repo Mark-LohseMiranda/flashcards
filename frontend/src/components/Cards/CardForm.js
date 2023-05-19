@@ -1,39 +1,46 @@
-import React, { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Input, initTE } from "tw-elements";
 import FORMAT from "../../Util/FORMAT";
+import ReactQuill from "react-quill";
+import "../../../node_modules/react-quill/dist/quill.snow.css";
+import { useSearchParams } from "react-router-dom";
+import API from "../../API/API";
 
-export default function CardForm({handleFormChange}) {
+export default function CardForm({setCardGroups}) {
+  const [questionForm, setQuestionForm] = useState("");
+  const [answerForm, setAnswerForm] = useState("");
+  const [urlCardGroupId, setUrlCardGroupId] = useSearchParams();
+
+  const saveCard = async () =>{
+    console.log(urlCardGroupId.get("cgid"))
+    try {
+      const formData = {question: questionForm, answer: answerForm}
+      await API.createCard(formData, urlCardGroupId.get("cgid")).then((res) => {
+        console.log(res.data)
+        setCardGroups(res.data);
+        localStorage.setItem("flashcardData", JSON.stringify(res.data));
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   useEffect(() => {
     initTE({ Input });
   });
   return (
     <div>
-      <div className="relative mb-4" data-te-input-wrapper-init>
-        <input
-          type="text"
-          className={FORMAT.input()}
-          id="question"
-          name="question"
-          placeholder="Question"
-          onChange={handleFormChange}
-        />{" "}
-        <label htmlFor="question" className={FORMAT.label()}>
-          Question
-        </label>
+      <div>
+        Question:
+        <ReactQuill theme="snow" value={questionForm} onChange={setQuestionForm} />
       </div>
-      <div className="relative mb-4" data-te-input-wrapper-init>
-        <input
-          type="text"
-          className={FORMAT.input()}
-          id="answer"
-          name="answer"
-          placeholder="Answer"
-          onChange={handleFormChange}
-        />{" "}
-        <label htmlFor="answer" className={FORMAT.label()}>
-          Answer
-        </label>
+      <div>
+        Answer:
+        <ReactQuill theme="snow" value={answerForm} onChange={setAnswerForm} />
       </div>
+      <button disabled={!questionForm && !answerForm} data-te-modal-dismiss onClick={saveCard}>
+        Save
+      </button>
     </div>
   );
 }
